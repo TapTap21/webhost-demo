@@ -1,0 +1,32 @@
+version: 0.2
+
+proxy:
+  upload-artifacts: yes
+  logs: yes
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+    commands:
+      - echo ===Install Phases===
+  pre_build:
+    commands:
+      - echo ===Pre-Build Phase===
+  build:
+    commands:
+      - echo Build started on 'date'
+  post_build:
+    commands:
+      - echo ===Post Build===
+      - docker ps
+      - echo Pushing docker images...
+      - docker tag go-clean-arch "${REPOSITORY_URI_GO}"
+      - docker tag mysql:5.7 "${REPOSITORY_URI_MYSQL}"
+      - docker push $REPOSITORY_URI_GO
+      - docker push $REPOSITORY_URI_MYSQL
+
+artifacts:
+  files:
+
+
